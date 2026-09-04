@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08090d">
+  <meta name="description" content="Build a polished CV/resume with live preview, two visual themes, and print-ready output — offline, no backend, autosaved to your browser.">
+  <title>Resume Builder — Web Utility Suite</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <header class="topbar container no-print">
+    <a class="brand" href="https://github.com/kasapdev" aria-label="Back to kasapdev tools">
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      </span>
+      <span class="col" style="gap:0">
+        <span>Resume Builder</span>
+        <span class="sub">Web Utility Suite</span>
+      </span>
+    </a>
+    <span class="spacer"></span>
+
+    <span id="statusBadge" class="badge badge--success" role="status" aria-live="polite">
+      <span class="status-dot" aria-hidden="true"></span><span id="statusText">Saved</span>
+    </span>
+
+    <button class="btn btn--icon" data-shortcut-help title="Keyboard shortcuts (?)" aria-label="Keyboard shortcuts">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="2" y="4" width="20" height="16" rx="2"/>
+        <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M7 16h10"/>
+      </svg>
+    </button>
+    <button class="btn btn--icon" data-theme-toggle title="Toggle theme" aria-label="Toggle theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+      </svg>
+    </button>
+  </header>
+
+  <main class="container">
+    <!-- Toolbar -->
+    <section class="panel toolbar-panel fade-in no-print" aria-label="Toolbar">
+      <div class="toolbar">
+        <div class="toolbar-group">
+          <button id="btnPrint" class="btn btn--primary" title="Print / Save as PDF (Ctrl/Cmd+P)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/></svg>
+            Print / Save as PDF
+          </button>
+        </div>
+        <div class="toolbar-group">
+          <div class="segmented" role="tablist" aria-label="Resume theme">
+            <button id="themeClassic" type="button" role="tab" aria-selected="true" class="is-active">Classic</button>
+            <button id="themeModern" type="button" role="tab" aria-selected="false">Modern</button>
+          </div>
+        </div>
+        <span class="spacer hide-sm"></span>
+        <div class="toolbar-group">
+          <button id="btnClearAll" class="btn btn--sm btn--ghost">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+            Clear all
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <div class="layout rise">
+      <!-- Form -->
+      <section class="col gap-6 no-print">
+        <div class="panel">
+          <h2 class="pane-title">Contact info</h2>
+          <div class="grid grid-2">
+            <div class="field"><label for="cName">Full name</label><input type="text" id="cName" placeholder="Ada Lovelace"></div>
+            <div class="field"><label for="cTitle">Headline / title</label><input type="text" id="cTitle" placeholder="Senior Software Engineer"></div>
+            <div class="field"><label for="cEmail">Email</label><input type="text" id="cEmail" placeholder="ada@example.com"></div>
+            <div class="field"><label for="cPhone">Phone</label><input type="text" id="cPhone" placeholder="+1 555 010 2020"></div>
+            <div class="field"><label for="cLocation">Location</label><input type="text" id="cLocation" placeholder="San Francisco, CA"></div>
+            <div class="field"><label for="cWebsite">Website / LinkedIn</label><input type="text" id="cWebsite" placeholder="linkedin.com/in/adalovelace"></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2 class="pane-title">Summary</h2>
+          <div class="field"><textarea id="cSummary" rows="3" placeholder="Results-driven engineer with 8+ years building distributed systems…"></textarea></div>
+        </div>
+
+        <div class="panel">
+          <div class="row between center" style="margin-bottom:var(--space-4)">
+            <h2 class="pane-title" style="margin:0">Work experience</h2>
+            <button id="btnAddExperience" class="btn btn--sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              Add entry
+            </button>
+          </div>
+          <div id="experienceForm" class="entries-form"></div>
+        </div>
+
+        <div class="panel">
+          <div class="row between center" style="margin-bottom:var(--space-4)">
+            <h2 class="pane-title" style="margin:0">Education</h2>
+            <button id="btnAddEducation" class="btn btn--sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              Add entry
+            </button>
+          </div>
+          <div id="educationForm" class="entries-form"></div>
+        </div>
+
+        <div class="panel">
+          <h2 class="pane-title">Skills</h2>
+          <div class="field">
+            <label for="skillInput">Add a skill and press Enter</label>
+            <input type="text" id="skillInput" placeholder="e.g. TypeScript">
+          </div>
+          <div id="skillTags" class="tag-list"></div>
+        </div>
+      </section>
+
+      <!-- Resume preview / print document -->
+      <section class="resume-wrap">
+        <div id="resumeDoc" class="resume-doc panel theme-classic">
+          <header class="r-header">
+            <h1 id="rName" class="r-name">Your Name</h1>
+            <div id="rTitle" class="r-title"></div>
+            <div id="rContact" class="r-contact"></div>
+          </header>
+
+          <section id="rSummarySection" class="r-section">
+            <h2 class="r-heading">Summary</h2>
+            <p id="rSummary" class="r-summary"></p>
+          </section>
+
+          <section id="rExperienceSection" class="r-section">
+            <h2 class="r-heading">Experience</h2>
+            <div id="rExperience"></div>
+          </section>
+
+          <section id="rEducationSection" class="r-section">
+            <h2 class="r-heading">Education</h2>
+            <div id="rEducation"></div>
+          </section>
+
+          <section id="rSkillsSection" class="r-section">
+            <h2 class="r-heading">Skills</h2>
+            <div id="rSkills" class="r-skills"></div>
+          </section>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="app-footer container no-print">
+    Part of the <a href="https://github.com/kasapdev">kasapdev</a> tools · MIT Licensed
+  </footer>
+
+  <!-- Shortcuts help modal -->
+  <div id="helpBackdrop" class="modal-backdrop no-print" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+      <div class="row between center" style="margin-bottom:var(--space-4)">
+        <h3 id="helpTitle" style="margin:0">Keyboard shortcuts</h3>
+        <button id="helpClose" class="btn btn--icon btn--ghost" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <table class="shortcut-table">
+        <tbody id="shortcutRows"></tbody>
+      </table>
+      <p class="muted" style="margin:var(--space-4) 0 0;font-size:13px">Tip: <kbd>mod</kbd> means <kbd>Ctrl</kbd> on Windows/Linux and <kbd>⌘</kbd> on macOS.</p>
+    </div>
+  </div>
+
+  <!-- Experience entry template -->
+  <template id="experienceRowTpl">
+    <div class="entry-row" data-entry-row>
+      <div class="entry-grid">
+        <div class="field"><label class="sr-only">Job title</label><input type="text" data-field="role" placeholder="Job title"></div>
+        <div class="field"><label class="sr-only">Company</label><input type="text" data-field="company" placeholder="Company"></div>
+        <div class="field"><label class="sr-only">Start</label><input type="text" data-field="start" placeholder="Start (e.g. 2021)"></div>
+        <div class="field"><label class="sr-only">End</label><input type="text" data-field="end" placeholder="End (e.g. Present)"></div>
+      </div>
+      <div class="field"><label class="sr-only">Description</label><textarea data-field="desc" rows="2" placeholder="Key achievements, one per line…"></textarea></div>
+      <button type="button" class="btn btn--sm btn--ghost entry-remove" data-entry-remove>Remove entry</button>
+    </div>
+  </template>
+
+  <!-- Education entry template -->
+  <template id="educationRowTpl">
+    <div class="entry-row" data-entry-row>
+      <div class="entry-grid">
+        <div class="field"><label class="sr-only">Degree</label><input type="text" data-field="degree" placeholder="Degree / program"></div>
+        <div class="field"><label class="sr-only">School</label><input type="text" data-field="school" placeholder="School"></div>
+        <div class="field"><label class="sr-only">Start</label><input type="text" data-field="start" placeholder="Start (e.g. 2016)"></div>
+        <div class="field"><label class="sr-only">End</label><input type="text" data-field="end" placeholder="End (e.g. 2020)"></div>
+      </div>
+      <div class="field"><label class="sr-only">Notes</label><input type="text" data-field="notes" placeholder="Honors, GPA, notes (optional)"></div>
+      <button type="button" class="btn btn--sm btn--ghost entry-remove" data-entry-remove>Remove entry</button>
+    </div>
+  </template>
+
+  <script src="assets/js/core.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

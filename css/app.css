@@ -1,0 +1,110 @@
+/* =====================================================================
+   Resume Builder — app.css
+   Extends the shared design system (base.css). The .r-* resume document
+   styles are print-first and ship two distinct themes (classic/modern)
+   toggled via a class on #resumeDoc.
+   ===================================================================== */
+
+[data-theme="light"] .icon-sun { display: none; }
+.icon-moon { display: none; }
+
+.pane-title { margin: 0 0 var(--space-4); font-size: 13px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--text-secondary); }
+
+.toolbar-panel { padding: var(--space-4) var(--space-5); }
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-4); }
+.toolbar-group { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.toolbar .spacer { flex: 1; }
+
+#statusBadge .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); box-shadow: 0 0 10px var(--success); }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+
+/* ===================== Layout ===================== */
+.layout { display: grid; grid-template-columns: 460px 1fr; gap: var(--space-6); align-items: start; margin-top: var(--space-2); }
+
+/* ===================== Repeatable entries ===================== */
+.entries-form { display: flex; flex-direction: column; gap: var(--space-4); }
+.entry-row { border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); background: var(--surface); }
+.entry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+.entry-remove { align-self: flex-start; }
+
+/* ===================== Skill tags ===================== */
+.tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: var(--space-3); }
+.tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px;
+  padding: 5px 8px 5px 12px; font-size: 13px; font-weight: 600; color: var(--text);
+}
+.tag button {
+  border: none; background: transparent; color: var(--text-muted); cursor: pointer;
+  width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; font-size: 14px; line-height: 1;
+}
+.tag button:hover { background: var(--danger-soft); color: var(--danger); }
+
+/* ===================== Resume document (shared) ===================== */
+.resume-wrap { min-width: 0; }
+.resume-doc {
+  background: #ffffff;
+  color: #16181f;
+  border-radius: var(--radius-lg);
+  padding: 44px;
+  min-height: 700px;
+  box-shadow: var(--shadow-lg);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+.r-heading { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; margin: 0 0 10px; }
+.r-section { margin-top: 22px; }
+.r-section:empty, .r-section.is-empty { display: none; }
+.r-entry { margin-bottom: 14px; }
+.r-entry:last-child { margin-bottom: 0; }
+.r-entry-head { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.r-entry-title { font-weight: 700; font-size: 14px; }
+.r-entry-sub { color: #5b5f72; font-size: 12.5px; }
+.r-entry-date { color: #8a8ea3; font-size: 12px; white-space: nowrap; }
+.r-entry-desc { margin: 6px 0 0; white-space: pre-line; color: #33364a; }
+.r-skills { display: flex; flex-wrap: wrap; gap: 8px; }
+.r-skill-pill { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; }
+
+/* ===================== Theme: Classic ===================== */
+.theme-classic { font-family: Georgia, 'Times New Roman', serif; }
+.theme-classic .r-header { text-align: center; border-bottom: 2px solid #d9dbe6; padding-bottom: 16px; margin-bottom: 6px; }
+.theme-classic .r-name { font-size: 27px; font-weight: 700; margin: 0 0 4px; letter-spacing: -.01em; }
+.theme-classic .r-title { font-size: 14px; color: #55586b; margin-bottom: 8px; }
+.theme-classic .r-contact { font-size: 12px; color: #767a8c; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.theme-classic .r-heading { color: #33364a; border-bottom: 1px solid #e2e4ee; padding-bottom: 4px; }
+.theme-classic .r-skill-pill { background: #f0f1f7; color: #33364a; }
+
+/* ===================== Theme: Modern ===================== */
+.theme-modern { font-family: var(--font-sans); padding-left: 0; border-left: 8px solid #6366f1; }
+.theme-modern .r-header { text-align: left; margin-bottom: 6px; }
+.theme-modern .r-name { font-size: 30px; font-weight: 800; margin: 0 0 2px; letter-spacing: -.02em; color: #16181f; }
+.theme-modern .r-title { font-size: 15px; font-weight: 600; color: #6366f1; margin-bottom: 10px; }
+.theme-modern .r-contact { font-size: 12px; color: #6b6f82; display: flex; gap: 14px; flex-wrap: wrap; }
+.theme-modern .r-heading { color: #6366f1; }
+.theme-modern .r-entry-title { color: #16181f; }
+.theme-modern .r-skill-pill { background: linear-gradient(135deg, rgba(99,102,241,.14), rgba(217,70,239,.1)); color: #4338ca; }
+
+/* ===================== Print ===================== */
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff !important; }
+  body::before, body::after { display: none !important; }
+  main.container { max-width: none; padding: 0; margin: 0; }
+  .layout { display: block; }
+  .resume-doc { box-shadow: none; border-radius: 0; padding: 0; min-height: 0; }
+  .theme-modern { border-left: none; padding-left: 0; }
+  @page { margin: 16mm; }
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 1040px) {
+  .layout { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  .grid-2, .entry-grid { grid-template-columns: 1fr; }
+  #statusBadge { display: none; }
+  .toolbar .spacer { display: none; }
+  .toolbar-group { width: 100%; }
+  .toolbar-group .btn { flex: 1; }
+}
