@@ -279,6 +279,16 @@
   themeClassicBtn.addEventListener('click', function () { setTheme('classic'); persist(); });
   themeModernBtn.addEventListener('click', function () { setTheme('modern'); persist(); });
 
+  /* Field edits are saved via a 400ms debounce (persistDebounced), so the
+     status badge can read "Saved" for up to 400ms after a keystroke that
+     hasn't actually hit localStorage yet. Flush immediately when the tab
+     is about to close or go into the background so a fast close/refresh
+     never drops the last few keystrokes. */
+  window.addEventListener('beforeunload', persist);
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden') persist();
+  });
+
   /* =================================================================
      SHORTCUTS HELP MODAL
      ================================================================= */
